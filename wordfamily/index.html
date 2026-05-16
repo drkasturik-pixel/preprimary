@@ -1,23 +1,39 @@
 <!-- =========================================================
 WORD FAMILY TRAIN ADVENTURE
-UPDATED VERSION
+FINAL VECTOR TRAIN VERSION
+GitHub Pages Compatible
 
-CHANGES MADE:
-✔ Removed clan
-✔ Removed vat
-✔ Added BIG animated train images
-✔ Bigger train drop zones
-✔ Child-friendly layout
-✔ GitHub safe
-✔ Mobile + tablet responsive
-✔ One screen only
-✔ Uses online animated train GIFs
+SAVE AS:
+index.html
 
-IMPORTANT:
-Place this file as index.html
-
-Put all uploaded files inside:
+PLACE ALL FILES INSIDE:
 assets/
+
+Required Assets:
+innovine-logo.png
+background-music.mp3
+correct.mp3
+wrong.mp3
+
+bat.jpg
+cat.jpg
+Chat.png
+
+can.png
+fan.png
+fat.png
+hat.png
+man.png
+mat.png
+pan.png
+pat.png
+plan.png
+ran.png
+rat.png
+sat.png
+swan.png
+tan.png
+van.png
 
 ========================================================= -->
 
@@ -92,7 +108,7 @@ z-index:10000;
 }
 
 /* =========================
-GAME
+GAME CONTAINER
 ========================= */
 
 #gameContainer{
@@ -123,24 +139,25 @@ box-shadow:0 2px 6px rgba(0,0,0,0.1);
 }
 
 /* =========================
-WORD CARD
+TOP AREA
 ========================= */
 
 #topArea{
-height:28%;
+height:24%;
 display:flex;
 justify-content:center;
 align-items:center;
 }
 
+/* WORD CARD */
+
 #card{
-width:180px;
+width:190px;
 background:white;
 border-radius:22px;
 padding:12px;
 text-align:center;
 box-shadow:0 4px 12px rgba(0,0,0,0.15);
-position:relative;
 }
 
 #card img{
@@ -152,23 +169,25 @@ pointer-events:none;
 
 #wordText{
 margin-top:10px;
-font-size:34px;
+font-size:36px;
 font-weight:bold;
 color:#444;
 }
 
 /* =========================
-TRAINS
+TRAIN AREA
 ========================= */
 
 #trainArea{
-height:50%;
+height:60%;
 display:flex;
-gap:14px;
+gap:10px;
 align-items:flex-end;
 }
 
-.train{
+/* EACH TRAIN */
+
+.trainContainer{
 flex:1;
 height:100%;
 position:relative;
@@ -177,27 +196,37 @@ justify-content:center;
 align-items:flex-end;
 }
 
-.train img{
+/* BIG VECTOR TRAINS */
+
+.trainVector{
 width:100%;
-max-height:95%;
+height:100%;
 object-fit:contain;
 pointer-events:none;
 }
 
+/* DROP ZONES */
+
 .dropZone{
 position:absolute;
-bottom:10%;
-width:75%;
-height:40%;
-border:5px dashed rgba(255,255,255,0.8);
-border-radius:24px;
+bottom:13%;
+width:72%;
+height:34%;
+
+border:5px dashed rgba(255,255,255,0.9);
+
+border-radius:22px;
+
 display:flex;
 justify-content:center;
 align-items:center;
+
 font-size:30px;
 font-weight:bold;
+
 color:white;
-text-shadow:1px 1px 2px black;
+
+text-shadow:1px 1px 3px black;
 }
 
 /* =========================
@@ -261,8 +290,8 @@ width:145px;
 }
 
 #card img{
-width:75px;
-height:75px;
+width:72px;
+height:72px;
 }
 
 #wordText{
@@ -270,7 +299,8 @@ font-size:28px;
 }
 
 .dropZone{
-font-size:22px;
+font-size:20px;
+width:78%;
 }
 
 #feedback{
@@ -289,7 +319,9 @@ font-size:34px;
 
 <body>
 
-<!-- SPLASH -->
+<!-- =========================
+SPLASH SCREEN
+========================= -->
 
 <div id="splashScreen">
 
@@ -305,11 +337,13 @@ Start Game
 
 </button>
 
-<!-- GAME -->
+<!-- =========================
+GAME
+========================= -->
 
 <div id="gameContainer">
 
-<!-- Instructions -->
+<!-- INSTRUCTIONS -->
 
 <div id="instructions">
 
@@ -321,7 +355,7 @@ Put -an words in the -an train.
 
 </div>
 
-<!-- Word Card -->
+<!-- TOP CARD -->
 
 <div id="topArea">
 
@@ -335,15 +369,17 @@ Put -an words in the -an train.
 
 </div>
 
-<!-- Train Area -->
+<!-- TRAINS -->
 
 <div id="trainArea">
 
 <!-- AT TRAIN -->
 
-<div class="train">
+<div class="trainContainer">
 
-<img src="https://media.tenor.com/x8v1oNUOmg4AAAAd/train-cartoon.gif">
+<img class="trainVector"
+
+src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Toy_Train.svg/1200px-Toy_Train.svg.png">
 
 <div class="dropZone"
 id="atTrain"
@@ -357,9 +393,11 @@ data-family="at">
 
 <!-- AN TRAIN -->
 
-<div class="train">
+<div class="trainContainer">
 
-<img src="https://media.tenor.com/x8v1oNUOmg4AAAAd/train-cartoon.gif">
+<img class="trainVector"
+
+src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Toy_Train.svg/1200px-Toy_Train.svg.png">
 
 <div class="dropZone"
 id="anTrain"
@@ -375,11 +413,11 @@ data-family="an">
 
 </div>
 
-<!-- Feedback -->
+<!-- FEEDBACK -->
 
 <div id="feedback"></div>
 
-<!-- End Screen -->
+<!-- END SCREEN -->
 
 <div id="endScreen">
 
@@ -404,6 +442,10 @@ src="assets/wrong.mp3"></audio>
 <audio id="backgroundMusic"
 loop
 src="assets/background-music.mp3"></audio>
+
+<!-- =========================
+SCRIPT
+========================= -->
 
 <script>
 
@@ -442,9 +484,7 @@ const words = [
 
 ];
 
-/* =========================
-VARIABLES
-========================= */
+/* VARIABLES */
 
 let currentIndex = 0;
 
@@ -632,7 +672,7 @@ activeZone = null;
 
 });
 
-/* CHECK */
+/* CHECK ANSWER */
 
 function checkAnswer(choice){
 
@@ -683,7 +723,7 @@ feedback.style.display="none";
 
 }
 
-/* END */
+/* FINISH */
 
 function finishGame(){
 
