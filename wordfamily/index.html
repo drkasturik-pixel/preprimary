@@ -1,23 +1,23 @@
 <!-- =========================================================
 WORD FAMILY TRAIN ADVENTURE
-FINAL GITHUB SAFE VERSION
-Single File Version
-Works on:
-✔ GitHub Pages
-✔ Android
-✔ iPhone/iPad
-✔ Old phones
-✔ Tablets
-✔ Low connectivity
+UPDATED VERSION
+
+CHANGES MADE:
+✔ Removed clan
+✔ Removed vat
+✔ Added BIG animated train images
+✔ Bigger train drop zones
+✔ Child-friendly layout
+✔ GitHub safe
+✔ Mobile + tablet responsive
+✔ One screen only
+✔ Uses online animated train GIFs
 
 IMPORTANT:
-Put this HTML file in root folder.
+Place this file as index.html
 
-Put ALL media inside:
+Put all uploaded files inside:
 assets/
-
-IMPORTANT FILE NAME:
-Chat.png  (capital C)
 
 ========================================================= -->
 
@@ -68,8 +68,8 @@ z-index:9999;
 }
 
 #splashScreen img{
-width:220px;
-max-width:70vw;
+width:240px;
+max-width:75vw;
 }
 
 /* =========================
@@ -78,7 +78,7 @@ START BUTTON
 
 #startButton{
 position:fixed;
-bottom:20px;
+bottom:18px;
 left:50%;
 transform:translateX(-50%);
 padding:14px 28px;
@@ -127,32 +127,32 @@ WORD CARD
 ========================= */
 
 #topArea{
-height:32%;
+height:28%;
 display:flex;
 justify-content:center;
 align-items:center;
 }
 
 #card{
-width:170px;
+width:180px;
 background:white;
-border-radius:20px;
-padding:10px;
+border-radius:22px;
+padding:12px;
 text-align:center;
-box-shadow:0 4px 10px rgba(0,0,0,0.15);
+box-shadow:0 4px 12px rgba(0,0,0,0.15);
 position:relative;
 }
 
 #card img{
-width:90px;
-height:90px;
+width:95px;
+height:95px;
 object-fit:contain;
 pointer-events:none;
 }
 
 #wordText{
 margin-top:10px;
-font-size:32px;
+font-size:34px;
 font-weight:bold;
 color:#444;
 }
@@ -162,24 +162,42 @@ TRAINS
 ========================= */
 
 #trainArea{
-height:42%;
+height:50%;
 display:flex;
-gap:12px;
+gap:14px;
+align-items:flex-end;
 }
 
 .train{
 flex:1;
+height:100%;
+position:relative;
+display:flex;
+justify-content:center;
+align-items:flex-end;
+}
+
+.train img{
+width:100%;
+max-height:95%;
+object-fit:contain;
+pointer-events:none;
+}
+
+.dropZone{
+position:absolute;
+bottom:10%;
+width:75%;
+height:40%;
+border:5px dashed rgba(255,255,255,0.8);
 border-radius:24px;
-border:4px dashed #777;
-background:white;
 display:flex;
 justify-content:center;
 align-items:center;
-text-align:center;
-font-size:28px;
+font-size:30px;
 font-weight:bold;
-color:#444;
-padding:10px;
+color:white;
+text-shadow:1px 1px 2px black;
 }
 
 /* =========================
@@ -234,12 +252,12 @@ MOBILE
 @media(max-width:768px){
 
 #instructions{
-font-size:14px;
+font-size:13px;
 padding:8px;
 }
 
 #card{
-width:140px;
+width:145px;
 }
 
 #card img{
@@ -248,11 +266,11 @@ height:75px;
 }
 
 #wordText{
-font-size:26px;
+font-size:28px;
 }
 
-.train{
-font-size:21px;
+.dropZone{
+font-size:22px;
 }
 
 #feedback{
@@ -271,9 +289,7 @@ font-size:34px;
 
 <body>
 
-<!-- =========================
-SPLASH SCREEN
-========================= -->
+<!-- SPLASH -->
 
 <div id="splashScreen">
 
@@ -281,9 +297,7 @@ SPLASH SCREEN
 
 </div>
 
-<!-- =========================
-START BUTTON
-========================= -->
+<!-- START BUTTON -->
 
 <button id="startButton">
 
@@ -291,9 +305,7 @@ Start Game
 
 </button>
 
-<!-- =========================
-GAME CONTAINER
-========================= -->
+<!-- GAME -->
 
 <div id="gameContainer">
 
@@ -323,23 +335,39 @@ Put -an words in the -an train.
 
 </div>
 
-<!-- Trains -->
+<!-- Train Area -->
 
 <div id="trainArea">
 
-<div class="train"
+<!-- AT TRAIN -->
+
+<div class="train">
+
+<img src="https://media.tenor.com/x8v1oNUOmg4AAAAd/train-cartoon.gif">
+
+<div class="dropZone"
 id="atTrain"
 data-family="at">
 
-🚂 -AT TRAIN
+-AT TRAIN
 
 </div>
 
-<div class="train"
+</div>
+
+<!-- AN TRAIN -->
+
+<div class="train">
+
+<img src="https://media.tenor.com/x8v1oNUOmg4AAAAd/train-cartoon.gif">
+
+<div class="dropZone"
 id="anTrain"
 data-family="an">
 
-🚂 -AN TRAIN
+-AN TRAIN
+
+</div>
 
 </div>
 
@@ -365,9 +393,7 @@ Replay
 
 </div>
 
-<!-- =========================
-AUDIO
-========================= -->
+<!-- AUDIO -->
 
 <audio id="correctSound"
 src="assets/correct.mp3"></audio>
@@ -378,10 +404,6 @@ src="assets/wrong.mp3"></audio>
 <audio id="backgroundMusic"
 loop
 src="assets/background-music.mp3"></audio>
-
-<!-- =========================
-SCRIPT
-========================= -->
 
 <script>
 
@@ -415,11 +437,8 @@ const words = [
 {word:"pat",family:"at",image:"assets/pat.png"},
 {word:"plan",family:"an",image:"assets/plan.png"},
 
-{word:"vat",family:"at",image:"assets/fat.png"},
-{word:"swan",family:"an",image:"assets/swan.png"},
-
 {word:"chat",family:"at",image:"assets/Chat.png"},
-{word:"clan",family:"an",image:"assets/man.png"}
+{word:"swan",family:"an",image:"assets/swan.png"}
 
 ];
 
@@ -465,9 +484,7 @@ document.getElementById("endScreen");
 const replayButton =
 document.getElementById("replayButton");
 
-/* =========================
-SHOW SPLASH
-========================= */
+/* SPLASH */
 
 setTimeout(()=>{
 
@@ -475,9 +492,7 @@ splashScreen.style.display="none";
 
 },5000);
 
-/* =========================
-START GAME
-========================= */
+/* START */
 
 startButton.addEventListener("click",()=>{
 
@@ -489,9 +504,7 @@ speakInstructions();
 
 });
 
-/* =========================
-SPEAK INSTRUCTIONS
-========================= */
+/* SPEAK INSTRUCTIONS */
 
 function speakInstructions(){
 
@@ -503,8 +516,6 @@ new SpeechSynthesisUtterance(
 );
 
 speech.rate = 0.9;
-
-speech.pitch = 1;
 
 speech.onend = ()=>{
 
@@ -520,9 +531,7 @@ speechSynthesis.speak(speech);
 
 }
 
-/* =========================
-LOAD WORD
-========================= */
+/* LOAD WORD */
 
 function loadWord(){
 
@@ -544,9 +553,7 @@ speakWord(currentWord.word);
 
 }
 
-/* =========================
-SPEAK WORD
-========================= */
+/* SPEAK WORD */
 
 function speakWord(text){
 
@@ -555,52 +562,44 @@ new SpeechSynthesisUtterance(text);
 
 speech.rate = 0.8;
 
-speech.pitch = 1;
-
 speechSynthesis.speak(speech);
 
 }
 
-/* =========================
-MOUSE DRAG
-========================= */
+/* DRAG */
 
 card.draggable = true;
 
 card.addEventListener("dragstart",(e)=>{
 
-e.dataTransfer.setData("text/plain","dragging");
+e.dataTransfer.setData("text/plain","drag");
 
 });
 
-/* =========================
-DROP
-========================= */
+/* DROP */
 
-document.querySelectorAll(".train")
-.forEach(train=>{
+document.querySelectorAll(".dropZone")
+.forEach(zone=>{
 
-train.addEventListener("dragover",(e)=>{
+zone.addEventListener("dragover",(e)=>{
 
 e.preventDefault();
 
 });
 
-train.addEventListener("drop",(e)=>{
+zone.addEventListener("drop",(e)=>{
 
 e.preventDefault();
 
-checkAnswer(train.dataset.family);
+checkAnswer(zone.dataset.family);
 
 });
 
 });
 
-/* =========================
-TOUCH SUPPORT
-========================= */
+/* TOUCH */
 
-let activeTrain = null;
+let activeZone = null;
 
 card.addEventListener("touchmove",(e)=>{
 
@@ -613,9 +612,9 @@ touch.clientY
 );
 
 if(target &&
-target.classList.contains("train")){
+target.classList.contains("dropZone")){
 
-activeTrain = target;
+activeZone = target;
 
 }
 
@@ -623,26 +622,24 @@ activeTrain = target;
 
 card.addEventListener("touchend",()=>{
 
-if(activeTrain){
+if(activeZone){
 
-checkAnswer(activeTrain.dataset.family);
+checkAnswer(activeZone.dataset.family);
 
 }
 
-activeTrain = null;
+activeZone = null;
 
 });
 
-/* =========================
-CHECK ANSWER
-========================= */
+/* CHECK */
 
 function checkAnswer(choice){
 
-const correctFamily =
+const correct =
 words[currentIndex].family;
 
-if(choice === correctFamily){
+if(choice === correct){
 
 correctSound.currentTime = 0;
 
@@ -670,9 +667,7 @@ showFeedback("❌");
 
 }
 
-/* =========================
-FEEDBACK
-========================= */
+/* FEEDBACK */
 
 function showFeedback(icon){
 
@@ -688,9 +683,7 @@ feedback.style.display="none";
 
 }
 
-/* =========================
-FINISH GAME
-========================= */
+/* END */
 
 function finishGame(){
 
@@ -709,9 +702,7 @@ endScreen.style.display="flex";
 
 }
 
-/* =========================
-REPLAY
-========================= */
+/* REPLAY */
 
 replayButton.addEventListener("click",()=>{
 
