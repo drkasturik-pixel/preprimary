@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1.0,
+maximum-scale=1.0,
+user-scalable=no">
+
+<title>Word Family Basket Adventure</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+-webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+width:100%;
+height:100%;
+overflow:hidden;
+background:#dff4ff;
+}
+
+/* =========================
+SPLASH SCREEN
+========================= */
+
+#splashScreen{
+position:fixed;
+inset:0;
+background:white;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999;
+}
+
+#splashScreen img{
+width:240px;
+max-width:75vw;
+}
+
+/* =========================
+START BUTTON
+========================= */
+
+#startButton{
+position:fixed;
+bottom:18px;
+left:50%;
+transform:translateX(-50%);
+padding:14px 28px;
+border:none;
+border-radius:16px;
+background:#ffd166;
+font-size:22px;
+font-weight:bold;
+color:#444;
+z-index:10000;
+}
+
+/* =========================
+GAME CONTAINER
+========================= */
+
+#gameContainer{
+display:none;
+width:100%;
+height:100%;
+padding:8px;
+flex-direction:column;
+justify-content:space-between;
+background:
+linear-gradient(to bottom,#dff4ff,#fff6d8);
+}
+
+/* =========================
+INSTRUCTIONS
+========================= */
+
+#instructions{
+background:#fff2b5;
+padding:10px;
+border-radius:16px;
+text-align:center;
+font-size:17px;
+font-weight:bold;
+line-height:1.4;
+color:#444;
+box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* =========================
+TOP AREA
+========================= */
+
+#topArea{
+height:24%;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+/* WORD CARD */
+
+#card{
+width:190px;
+background:white;
+border-radius:22px;
+padding:12px;
+text-align:center;
+box-shadow:0 4px 12px rgba(0,0,0,0.15);
+cursor:grab;
+}
+
+#card img{
+width:95px;
+height:95px;
+object-fit:contain;
+pointer-events:none;
+}
+
+#wordText{
+margin-top:10px;
+font-size:36px;
+font-weight:bold;
+color:#444;
+}
+
+/* =========================
+BASKET AREA
+========================= */
+
+#basketArea{
+height:52%;
+display:flex;
+justify-content:space-between;
+align-items:flex-end;
+padding:0 16px;
+gap:20px;
+}
+
+/* BASKET CONTAINER */
+
+.basketContainer{
+flex:1;
+height:100%;
+display:flex;
+flex-direction:column;
+justify-content:flex-end;
+align-items:center;
+}
+
+/* BASKET IMAGE */
+
+.basketImage{
+width:80%;
+max-height:65%;
+object-fit:contain;
+pointer-events:none;
+}
+
+/* DROP ZONE */
+
+.dropZone{
+margin-top:10px;
+
+width:75%;
+height:70px;
+
+border:5px dashed #ffffff;
+
+border-radius:22px;
+
+background:rgba(255,255,255,0.3);
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+font-size:28px;
+font-weight:bold;
+
+color:white;
+
+text-shadow:1px 1px 3px black;
+}
+
+/* =========================
+FEEDBACK
+========================= */
+
+#feedback{
+position:fixed;
+inset:0;
+display:none;
+justify-content:center;
+align-items:center;
+font-size:120px;
+z-index:99999;
+pointer-events:none;
+}
+
+/* =========================
+END SCREEN
+========================= */
+
+#endScreen{
+position:fixed;
+inset:0;
+background:rgba(255,255,255,0.96);
+display:none;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+gap:20px;
+z-index:99999;
+}
+
+#endScreen h1{
+font-size:42px;
+color:#444;
+}
+
+#replayButton{
+padding:14px 28px;
+border:none;
+border-radius:16px;
+background:#ffd166;
+font-size:22px;
+font-weight:bold;
+}
+
+/* =========================
+MOBILE
+========================= */
+
+@media(max-width:768px){
+
+#instructions{
+font-size:13px;
+padding:8px;
+}
+
+#card{
+width:145px;
+}
+
+#card img{
+width:72px;
+height:72px;
+}
+
+#wordText{
+font-size:28px;
+}
+
+.basketImage{
+width:88%;
+}
+
+.dropZone{
+font-size:19px;
+width:85%;
+height:60px;
+}
+
+#feedback{
+font-size:90px;
+}
+
+#endScreen h1{
+font-size:34px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- SPLASH SCREEN -->
+
+<div id="splashScreen">
+
+<img src="assets/innovine-logo.png">
+
+</div>
+
+<!-- START BUTTON -->
+
+<button id="startButton">
+
+Start Game
+
+</button>
+
+<!-- GAME -->
+
+<div id="gameContainer">
+
+<!-- INSTRUCTIONS -->
+
+<div id="instructions">
+
+Drag and drop the word into the correct basket.<br>
+
+Put -at words in the -at basket.<br>
+
+Put -an words in the -an basket.
+
+</div>
+
+<!-- TOP CARD -->
+
+<div id="topArea">
+
+<div id="card">
+
+<img id="wordImage">
+
+<div id="wordText"></div>
+
+</div>
+
+</div>
+
+<!-- BASKETS -->
+
+<div id="basketArea">
+
+<!-- AT BASKET -->
+
+<div class="basketContainer">
+
+<img class="basketImage"
+src="assets/basket.png">
+
+<div class="dropZone"
+id="atBasket"
+data-family="at">
+
+-AT BASKET
+
+</div>
+
+</div>
+
+<!-- AN BASKET -->
+
+<div class="basketContainer">
+
+<img class="basketImage"
+src="assets/basket.png">
+
+<div class="dropZone"
+id="anBasket"
+data-family="an">
+
+-AN BASKET
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- FEEDBACK -->
+
+<div id="feedback"></div>
+
+<!-- END SCREEN -->
+
+<div id="endScreen">
+
+<h1>🎉 Great Job! 🎉</h1>
+
+<button id="replayButton">
+
+Replay
+
+</button>
+
+</div>
+
+<!-- AUDIO -->
+
+<audio id="correctSound"
+src="assets/correct.mp3"></audio>
+
+<audio id="wrongSound"
+src="assets/wrong.mp3"></audio>
+
+<audio id="backgroundMusic"
+loop
+src="assets/background-music.mp3"></audio>
+
+<!-- =========================
+SCRIPT
+========================= -->
+
+<script>
+
+/* =========================
+WORDS
+========================= */
+
+const atWords=[
+{word:"hat",family:"at",image:"assets/hat.png"},
+{word:"cat",family:"at",image:"assets/cat.jpg"},
+{word:"bat",family:"at",image:"assets/bat.jpg"},
+{word:"mat",family:"at",image:"assets/mat.png"},
+{word:"rat",family:"at",image:"assets/rat.png"},
+{word:"fat",family:"at",image:"assets/fat.png"},
+{word:"sat",family:"at",image:"assets/sat.png"},
+{word:"pat",family:"at",image:"assets/pat.png"},
+{word:"chat",family:"at",image:"assets/Chat.png"}
+];
+
+const anWords=[
+{word:"fan",family:"an",image:"assets/fan.png"},
+{word:"pan",family:"an",image:"assets/pan.png"},
+{word:"van",family:"an",image:"assets/van.png"},
+{word:"man",family:"an",image:"assets/man.png"},
+{word:"can",family:"an",image:"assets/can.png"},
+{word:"tan",family:"an",image:"assets/tan.png"},
+{word:"ran",family:"an",image:"assets/ran.png"},
+{word:"plan",family:"an",image:"assets/plan.png"},
+{word:"swan",family:"an",image:"assets/swan.png"}
+];
+
+function shuffle(arr){
+ for(let i=arr.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [arr[i],arr[j]]=[arr[j],arr[i]];
+ }
+}
+
+function buildWordSequence(){
+ shuffle(atWords);
+ shuffle(anWords);
+ let ai=0,ni=0;
+ const sequence=[];
+ const patterns=[
+   ["at","at","an"],
+   ["at","an","an"],
+   ["an","at","an"],
+   ["at","an","at"]
+ ];
+ while(ai<atWords.length||ni<anWords.length){
+   const p=patterns[Math.floor(Math.random()*patterns.length)];
+   for(const fam of p){
+      if(fam==="at" && ai<atWords.length) sequence.push(atWords[ai++]);
+      if(fam==="an" && ni<anWords.length) sequence.push(anWords[ni++]);
+   }
+ }
+ return sequence;
+}
+
+let words=buildWordSequence();
+
+/* VARIABLES */
+
+let currentIndex = 0;
+
+const splashScreen =
+document.getElementById("splashScreen");
+
+const startButton =
+document.getElementById("startButton");
+
+const gameContainer =
+document.getElementById("gameContainer");
+
+const wordImage =
+document.getElementById("wordImage");
+
+const wordText =
+document.getElementById("wordText");
+
+const card =
+document.getElementById("card");
+
+const feedback =
+document.getElementById("feedback");
+
+const correctSound =
+document.getElementById("correctSound");
+
+const wrongSound =
+document.getElementById("wrongSound");
+
+const backgroundMusic =
+document.getElementById("backgroundMusic");
+
+const endScreen =
+document.getElementById("endScreen");
+
+const replayButton =
+document.getElementById("replayButton");
+
+/* SPLASH */
+
+setTimeout(()=>{
+
+splashScreen.style.display="none";
+
+},5000);
+
+/* START GAME */
+
+startButton.addEventListener("click",()=>{
+
+startButton.style.display="none";
+
+gameContainer.style.display="flex";
+
+speakInstructions();
+
+});
+
+/* SPEAK INSTRUCTIONS */
+
+function speakInstructions(){
+
+const speech =
+new SpeechSynthesisUtterance(
+
+"Drag and drop the word into the correct basket. Put at words in the at basket. Put an words in the an basket."
+
+);
+
+speech.rate = 0.9;
+
+speech.pitch = 1;
+
+speech.onend = ()=>{
+
+backgroundMusic.volume = 0.2;
+
+backgroundMusic.play();
+
+loadWord();
+
+};
+
+speechSynthesis.speak(speech);
+
+}
+
+/* LOAD WORD */
+
+function loadWord(){
+
+if(currentIndex >= words.length){
+
+finishGame();
+
+return;
+
+}
+
+const currentWord = words[currentIndex];
+
+wordImage.src = currentWord.image;
+
+wordText.innerText = currentWord.word;
+
+speakWord(currentWord.word);
+
+}
+
+/* SPEAK WORD */
+
+function speakWord(text){
+
+const speech =
+new SpeechSynthesisUtterance(text);
+
+speech.rate = 0.8;
+
+speech.pitch = 1;
+
+speechSynthesis.speak(speech);
+
+}
+
+/* DRAG */
+
+card.draggable = true;
+
+card.addEventListener("dragstart",(e)=>{
+
+e.dataTransfer.setData("text/plain","drag");
+
+});
+
+/* DROP */
+
+document.querySelectorAll(".dropZone")
+.forEach(zone=>{
+
+zone.addEventListener("dragover",(e)=>{
+
+e.preventDefault();
+
+});
+
+zone.addEventListener("drop",(e)=>{
+
+e.preventDefault();
+
+checkAnswer(zone.dataset.family);
+
+});
+
+});
+
+/* TOUCH SUPPORT */
+
+let activeZone = null;
+
+card.addEventListener("touchmove",(e)=>{
+
+const touch = e.touches[0];
+
+const target =
+document.elementFromPoint(
+touch.clientX,
+touch.clientY
+);
+
+if(target &&
+target.classList.contains("dropZone")){
+
+activeZone = target;
+
+}
+
+});
+
+card.addEventListener("touchend",()=>{
+
+if(activeZone){
+
+checkAnswer(activeZone.dataset.family);
+
+}
+
+activeZone = null;
+
+});
+
+/* CHECK ANSWER */
+
+function checkAnswer(choice){
+
+const correct =
+words[currentIndex].family;
+
+if(choice === correct){
+
+correctSound.currentTime = 0;
+
+correctSound.play();
+
+showFeedback("👏");
+
+currentIndex++;
+
+setTimeout(()=>{
+
+loadWord();
+
+},1000);
+
+}else{
+
+wrongSound.currentTime = 0;
+
+wrongSound.play();
+
+showFeedback("❌");
+
+}
+
+}
+
+/* FEEDBACK */
+
+function showFeedback(icon){
+
+feedback.style.display="flex";
+
+feedback.innerHTML = icon;
+
+setTimeout(()=>{
+
+feedback.style.display="none";
+
+},900);
+
+}
+
+/* FINISH GAME */
+
+function finishGame(){
+
+backgroundMusic.pause();
+
+const speech =
+new SpeechSynthesisUtterance(
+
+"Great job. You finished the game."
+
+);
+
+speechSynthesis.speak(speech);
+
+endScreen.style.display="flex";
+
+}
+
+/* REPLAY */
+
+replayButton.addEventListener("click",()=>{
+
+words = buildWordSequence();
+
+currentIndex = 0;
+
+endScreen.style.display="none";
+
+backgroundMusic.currentTime = 0;
+
+backgroundMusic.play();
+
+loadWord();
+
+});
+
+</script>
+
+</body>
+
+</html>
